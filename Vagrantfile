@@ -6,13 +6,14 @@ Vagrant::Config.run do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
   
-  username      = "ubuntu"
-  local_app_dir = "/Users/ted/dc/documentcloud/"
+  username      = "vagrant"
+  local_app_dir = "./documentcloud/"
   app_root      = "/home/#{username}/documentcloud"
   rails_env     = "development"
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "documentcloud"
+  config.vm.box = "precise64"
+  config.vm.host_name = "documentcloud"
   config.ssh.username = username
 
   # The url from where the 'config.vm.box' box will be fetched if it
@@ -39,11 +40,13 @@ Vagrant::Config.run do |config|
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
   config.vm.share_folder "app_root", app_root, local_app_dir
+  config.vm.share_folder "scripts", "/home/#{username}/scripts", "./scripts"
 
   script = <<-SHELL
     export USERNAME=#{username};
     export RAILS_ENV=#{rails_env};
     sh /vagrant/scripts/base.sh;
+    sh /vagrant/scripts/db.sh;
 SHELL
 
   config.vm.provision :shell, :inline => script
