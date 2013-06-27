@@ -50,6 +50,7 @@ Vagrant::Config.run do |config|
     export RAILS_ENV=#{rails_env};
     sh /vagrant/scripts/base.sh;
     sh /vagrant/scripts/db.sh;
+    sh /vagrant/scripts/app.sh;
 SHELL
 
   config.vm.provision :shell, :inline => script
