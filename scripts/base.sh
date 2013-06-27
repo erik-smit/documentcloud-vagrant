@@ -6,7 +6,7 @@ test $USERNAME  || { echo "USERNAME has to be set" >&2; exit 1; }
 test $RAILS_ENV || { echo "USERNAME has to be set" >&2; exit 1; }
 
 # Set up system dependencies
-BASICS='git build-essential postgresql libpq-dev git sqlite3 libsqlite3-dev libpcre3-dev lzop libxml2-dev libxslt-dev libcurl4-gnutls-dev libitext-java ruby1.8 rubygems'
+BASICS='git-core build-essential postgresql libpq-dev git sqlite3 libsqlite3-dev libpcre3-dev lzop libxml2-dev libxslt-dev libcurl4-gnutls-dev libitext-java ruby1.8 rubygems'
 echo $BASICS | xargs apt-get install -y
 
 DOCSPLIT_DEPS='graphicsmagick pdftk xpdf poppler-utils libreoffice libreoffice-java-common tesseract-ocr ghostscript'
