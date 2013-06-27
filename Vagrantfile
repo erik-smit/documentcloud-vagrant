@@ -13,7 +13,7 @@ Vagrant::Config.run do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise64"
-  config.vm.host_name = "documentcloud"
+  config.vm.host_name = "dev.dcloud.org"
   config.ssh.username = username
 
   # The url from where the 'config.vm.box' box will be fetched if it
@@ -25,6 +25,9 @@ Vagrant::Config.run do |config|
   # any other machines on the same network, but cannot be accessed (through this
   # network interface) by any external networks.
   config.vm.network :hostonly, "192.168.33.10"
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.aliases = %w(dev.dcloud.org)
 
   # Assign this VM to a bridged network, allowing you to connect directly to a
   # network using the host's network device. This makes the VM appear as another
