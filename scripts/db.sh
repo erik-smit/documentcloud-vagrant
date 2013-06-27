@@ -1,14 +1,14 @@
 # verify that postgres is loaded properly
 
-test $USERNAME || { USERNAME=ubuntu; }
+test $USERNAME || { USERNAME=vagrant; }
 
 test -e /etc/postgresql/9.1/main/pg_hba.conf || { echo "Can't find the PostgreSQL 9.1 Client Authentication Configuration File (/etc/postgresql/9.1/main/pg_hba.conf)" >&2; exit 1; }
 
 cd /home/$USERNAME/documentcloud
 
 # setup dummy postgres environment so that you can verify rails is working
-cp config/server/postgres/pg_hba.conf  /etc/postgresql/9.1/main/pg_hba.conf
-/etc/init.d/postgresql reload
+sudo cp config/server/postgres/pg_hba.conf  /etc/postgresql/9.1/main/pg_hba.conf
+sudo /etc/init.d/postgresql reload
 
 # verify that databases don't already exist
 
