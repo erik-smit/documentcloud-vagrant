@@ -1,0 +1,14 @@
+
+Add box to vagrant inventory
+	vagrant box add documentcloud documentcloud-20130628.box
+
+To add vm aliases to host (/etc/hosts) (https://github.com/smdahlen/vagrant-hostmanager)
+	vagrant plugin install vagrant-hostmanager
+	vagrant hostmanager
+
+Create and Start Crowd Cloud
+	crowd -c config/cloud_crowd/development -e development load_schema
+	rake crowd:server:start crowd:node:start
+
+Start Solr
+	rake sunspot:solr:start
