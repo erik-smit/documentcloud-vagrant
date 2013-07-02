@@ -1,8 +1,13 @@
 # Ensure nginx is installed
 test $DCLOUD_HOME || { echo "DCLOUD_HOME has to be set" >&2; exit 1; }
 
-test -e /usr/local/nginx || { gem install passenger ; /usr/local/bin/passenger-install-nginx-module --auto --auto-download \
-    --prefix /usr/local/nginx --extra-configure-flags='--with-http_gzip_static_module --with-http_ssl_module --with-http_stub_status_module'; }
+if [ ! -d /usr/local/nginx ]; then
+echo "Installing nginx"	
+gem install passenger; 
+/usr/local/bin/passenger-install-nginx-module --auto --auto-download \
+    --prefix /usr/local/nginx \
+    --extra-configure-flags='--with-http_gzip_static_module --with-http_ssl_module --with-http_stub_status_module';
+fi
 
 test -e /usr/local/nginx || { echo "nginx not properly installed" >&2; exit 1; }
 
