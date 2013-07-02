@@ -1,23 +1,18 @@
 require 'fileutils'
 require 'erb'
-=begin
-  cp config/server/nginx/nginx.conf /usr/local/nginx/conf/
-  cp config/server/nginx/$RAILS_ENVIRONMENT.conf /usr/local/nginx/conf/sites-enabled/
-  # TODO nginx configuration is not rock solid
-  cp config/server/nginx/nginx.init /etc/init.d/nginx
-  update-rc.d nginx defaults
-=end
 
 here = File.dirname(__FILE__)
 rails_env = ENV['RAILS_ENV'] || "development"
+nginx_home = ENV['NGINX_HOME'] || "/usr/local/nginx"
+dcloud_home = ENV['DCLOUD_HOME'] || abort("DCLOUD_HOME environment variable should be set.")
 
-File.open "/usr/local/nginx/conf/nginx.conf", "w" do |nginx_conf|
+File.open "#{nginx_home}/conf/nginx.conf", "w" do |nginx_conf|
   passenger_root      = `passenger-config --root`
   nginx_conf_template = File.open(File.join(here, "erb", "nginx.conf.erb")).read
   nginx_conf.puts ERB.new(nginx_conf_template).result(binding)
 end
 
-File.open "/usr/local/nginx/conf/sites-enabled/#{rails_env}.conf", "w" do |site_conf|
+File.open "#{nginx_home}/conf/sites-enabled/#{rails_env}.conf", "w" do |site_conf|
   certpath = "/home/vagrant/documentcloud/secrets/keys/dev.dcloud.org.crt"
   keypath  = "/home/vagrant/documentcloud/secrets/keys/dev.dcloud.org.key"
 
@@ -25,9 +20,9 @@ File.open "/usr/local/nginx/conf/sites-enabled/#{rails_env}.conf", "w" do |site_
   site_conf.puts ERB.new(site_conf_template).result(binding)
 end
 
-File.open "/usr/local/nginx/conf/documentcloud.conf", "w" do |dc_conf|
+File.open "#{nginx_home}/conf/documentcloud.conf", "w" do |dc_conf|
   server_name = "dev.dcloud.org"
-  app_root    = "/home/vagrant/documentcloud/public"
+  app_root    = "#{dcloud_home}/public"
 
   dc_conf_template = File.open(File.join(here, "erb", "documentcloud.conf.erb")).read
   dc_conf.puts ERB.new(dc_conf_template).result(binding)
