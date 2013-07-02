@@ -19,6 +19,8 @@ ruby /vagrant/scripts/configure_nginx.rb
 
 cd $DCLOUD_HOME
 test -e secrets/keys || { cp -r config/server/keys secrets/ ; }
+./script/runner /vagrant/scripts/provision.rb
+crowd -c config/cloud_crowd/development -e development load_schema
 
 cp config/server/nginx/nginx.init /etc/init.d/nginx
 update-rc.d nginx defaults
