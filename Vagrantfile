@@ -4,7 +4,7 @@
 Vagrant.configure("2") do |config|
   
   username      = "vagrant"
-  app_root      = "/home/#{username}/documentcloud"
+  dcloud_home   = "/home/#{username}/documentcloud"
   rails_env     = "development"
 
   config.vm.box = "precise64"
@@ -18,15 +18,16 @@ Vagrant.configure("2") do |config|
   config.hostmanager.manage_host = true
   config.hostmanager.aliases = %w(dev.dcloud.org)
 
-  config.vm.synced_folder "./documentcloud/", app_root 
+  config.vm.synced_folder "./documentcloud/", dcloud_home 
   config.vm.synced_folder "./scripts", "/home/#{username}/scripts"
 
   script = <<-SHELL
     export USERNAME=#{username};
     export RAILS_ENV=#{rails_env};
+    export DCLOUD_HOME=#{dcloud_home};
     sh /vagrant/scripts/base.sh;
     sh /vagrant/scripts/db.sh;
-    sh /vagrant/scripts/app.sh;
+    sh /vagrant/scripts/app.sh;    
 SHELL
 
   config.vm.provision :shell, :inline => script
