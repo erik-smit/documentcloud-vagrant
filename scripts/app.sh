@@ -22,6 +22,15 @@ test -e secrets/keys || { cp -r config/server/keys secrets/ ; }
 ./script/runner /vagrant/scripts/provision.rb
 crowd -c config/cloud_crowd/development -e development load_schema
 
+test -s tmp/pids/sunspot-solr-development.pid && rake sunspot:solr:stop
+rake sunspot:solr:start
+
+test -s tmp/pids/server.pid && rake crowd:server:stop
+rake crowd:server:start
+
+test -s tmp/pids/node.pid && rake crowd:node:stop
+rake crowd:node:start
+
 cp config/server/nginx/nginx.init /etc/init.d/nginx
 update-rc.d nginx defaults
 service nginx start
