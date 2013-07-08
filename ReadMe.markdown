@@ -1,32 +1,38 @@
 # DocumentCloud Vagrant VM
 
-These Vagrant scripts provide a(n ALPHA-STAGE) development environment for the DocumentCloud platform.  [DocumentCloud](http://www.documentcloud.org) itself is a web based platform for uploading, analyzing, annotating and publishing primary source material.
+These [Vagrant](http://www.vagrantup.com/) setup provides a development environment for the DocumentCloud platform. [DocumentCloud](http://www.documentcloud.org) itself is a web based platform for uploading, analyzing, annotating and publishing primary source material.
 
-Clone documentcloud repository
-	git clone https://github.com/documentcloud/documentcloud.git
+## Requirements
+* [Vagrant 1.1.x or higher](http://docs.vagrantup.com/v2/installation/index.html)
+* [Vagrant's Host Manager plugin](https://github.com/smdahlen/vagrant-hostmanager): 
+	
+	``` vagrant plugin install vagrant-hostmanager ```
 
-To add vm aliases to host (/etc/hosts) (https://github.com/smdahlen/vagrant-hostmanager)
-	vagrant plugin install vagrant-hostmanager
-	vagrant hostmanager
+## Start
 
-Create and Start Crowd Cloud
-	crowd -c config/cloud_crowd/development -e development load_schema
-	rake crowd:server:start crowd:node:start
+* Clone documentcloud repository in this repository folder:
 
-Start Solr
-	rake sunspot:solr:start
+	```git clone https://github.com/documentcloud/documentcloud.git```
 
-Create Admin User
-	admin = Account.new(:first_name => "Admin", :last_name => "Istrator", :email => "admin@dev.dcloud.org")
-	admin.password=123
-	admin.save!
+* Start VM: ```vagrant up```
 
-	org = Organization.create(:name => "Dev DCloud", :slug => "dev-dcloud")
-	org.add_member(admin, 1)
-	org.save!
+* Add the alias **dev.dcloud.org** for the VM running the command: ```vagrant hostmanager```
+
+## Login
+* Go to [http://dev.dcloud.org](http://dev.dcloud.org)
+* Log in as **admin@dev.dcloud.org** with passsword **admin**
+
+## What is provisioned?
+* Uses ***precise64*** Vagrant default box
+* Installs PostgreSQL, Nginx, Phusion Passenger
+* _home/vagrant/documentcloud_ is linked as default site
+* Create datadabase and Start [Crowd Cloud](https://github.com/documentcloud/cloud-crowd);
+	- crowd -c config/cloud_crowd/development -e development load_schema
+	- rake crowd:server:start crowd:node:start
+* Start Solr
+	- rake sunspot:solr:start
 
 
-To create Organizations
-	https://dev.dcloud.org/admin/signup
-
-	https://dev.dcloud.org/admin/featured	
+### Some internal links
+* To create Organizations: [https://dev.dcloud.org/admin/signup](https://dev.dcloud.org/admin/signup)
+* [https://dev.dcloud.org/admin/featured](https://dev.dcloud.org/admin/featured)	
